@@ -1,8 +1,6 @@
-using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -17,27 +15,27 @@ namespace ExemploRoteamentoURLs.Middlewares
             _next = next;
         }
 
+        public MiddlewareConsultaCep()
+        {
+        }
+
         public async Task Invoke(HttpContext context)
         {
-            string[] segmentos = context.Request.Path.ToString().Split("/", System.StringSplitOptions.RemoveEmptyEntries);
+            string cep = context.Request.RouteValues["cep"] as string;
+            JsonCepModel jsonCepObjeto = await ConsultaCep(cep);
 
-            if (segmentos.Length == 2 && segmentos[0] == "cep")
-            {
-                string cep = segmentos[1];
-                JsonCepModel jsonCepObjeto = await ConsultaCep(cep);
+            context.Response.ContentType = "text/html; charset=utf-8";
 
-                context.Response.ContentType = "text/html; charset=utf-8";
+            StringBuilder html = new StringBuilder();
+            html.Append($"<h3>Dados para o CEP {jsonCepObjeto.CEP} </h3>");
+            html.Append($"<p>Logradouro: {jsonCepObjeto.Logradouro}</p>");
+            html.Append($"<p>Bairro: {jsonCepObjeto.Bairro}</p>");
+            html.Append($"<p>Município: {jsonCepObjeto.Municipio}</p>");
+            html.Append($"<p>UF: {jsonCepObjeto.Uf}</p>");
 
-                StringBuilder html = new StringBuilder();
-                html.Append($"<h3>Dados para o CEP {jsonCepObjeto.CEP} </h3>");
-                html.Append($"<p>Logradouro: {jsonCepObjeto.Logradouro}</p>");
-                html.Append($"<p>Bairro: {jsonCepObjeto.Bairro}</p>");
-                html.Append($"<p>Município: {jsonCepObjeto.Municipio}</p>");
-                html.Append($"<p>UF: {jsonCepObjeto.Uf}</p>");
+            await context.Response.WriteAsync(html.ToString());
 
-                await context.Response.WriteAsync(html.ToString());
-            }
-            else if (_next != null)
+            if (_next != null)
             {
                 await _next(context);
             }

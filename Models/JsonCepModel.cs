@@ -13,7 +13,7 @@ public sealed class JsonCepModel
 
     [JsonProperty("bairro")]
     public string Bairro { get; set; }
-    
+
     [JsonProperty("localidade")]
     public string Municipio { get; set; }
 
@@ -25,4 +25,7 @@ public sealed class JsonCepModel
 
     [JsonProperty("ibge")]
     public string Ibge { get; set; }
+
+    [JsonProperty("erro")]
+    public bool Erro { get; set; }
 }

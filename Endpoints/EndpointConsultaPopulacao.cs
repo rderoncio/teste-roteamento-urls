@@ -4,23 +4,11 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
 
-namespace ExemploRoteamentoURLs.Middlewares
+namespace ExemploRoteamentoURLs.Endpoint
 {
-    public class MiddlewareConsultaPopulacao
+    public static class EndpointConsultaPopulacao
     {
-        private readonly RequestDelegate _next;
-
-        public MiddlewareConsultaPopulacao(RequestDelegate next)
-        {
-            _next = next;
-        }
-
-        public MiddlewareConsultaPopulacao()
-        {
-        }
-
-
-        public async Task Invoke(HttpContext context)
+        public static async Task Endpoint(HttpContext context)
         {
             string localidade = HttpUtility.UrlDecode(context.Request.RouteValues["local"] as string);
 
@@ -32,10 +20,6 @@ namespace ExemploRoteamentoURLs.Middlewares
             html.Append($"<p>População de {populacaoRandom:N0} habitantes</p>");
             await context.Response.WriteAsync(html.ToString());
 
-            if (_next != null)
-            {
-                await _next(context);
-            }
         }
     }
 }
