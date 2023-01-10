@@ -33,8 +33,8 @@ namespace ExemploRoteamentoURLs
                     await context.Response.WriteAsync("Requisição foi Roteada");
                 });
 
-                endpoint.MapGet("populacao/{local}", EndpointConsultaPopulacao.Endpoint).WithMetadata(new RouteNameMetadata("consultapop"));
-                endpoint.MapGet("cep/{cep}", EndpointConsultaCep.Endpoint);
+                endpoint.MapGet("populacao/{local=São%20Paulo-SP}", EndpointConsultaPopulacao.Endpoint).WithMetadata(new RouteNameMetadata("consultapop"));
+                endpoint.MapGet("cep/{cep?}", EndpointConsultaCep.Endpoint);
             });
 
             app.UseMiddlewareTerminal();

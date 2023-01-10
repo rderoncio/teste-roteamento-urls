@@ -12,7 +12,8 @@ namespace ExemploRoteamentoURLs.Endpoint
     {
         public static async Task Endpoint(HttpContext context)
         {
-            string cep = context.Request.RouteValues["cep"] as string;
+            string cep = context.Request.RouteValues["cep"] as string ?? "01001000";
+
             context.Response.ContentType = "text/html; charset=utf-8";
             JsonCepModel jsonCepObjeto = await ConsultaCep(cep);
 
