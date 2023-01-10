@@ -3,6 +3,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing;
 
 namespace ExemploRoteamentoURLs.Endpoint
 {
@@ -22,6 +24,13 @@ namespace ExemploRoteamentoURLs.Endpoint
                 html.Append($"<p>Bairro: {jsonCepObjeto.Bairro}</p>");
                 html.Append($"<p>Município: {jsonCepObjeto.Municipio}</p>");
                 html.Append($"<p>UF: {jsonCepObjeto.Uf}</p>");
+
+                string localidade = $"{jsonCepObjeto.Municipio}-{jsonCepObjeto.Uf}";
+                LinkGenerator gerador = context.RequestServices.GetService<LinkGenerator>();
+                string url = gerador.GetPathByRouteValues(context, "consultapop", new {local = localidade});
+
+                html.Append($"<p><a href='{url}'>Consultar População</p>");
+
             }
             else
             {

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ExemploRoteamentoURLs.Endpoint;
+using Microsoft.AspNetCore.Routing;
 
 namespace ExemploRoteamentoURLs
 {
@@ -32,7 +33,7 @@ namespace ExemploRoteamentoURLs
                     await context.Response.WriteAsync("Requisição foi Roteada");
                 });
 
-                endpoint.MapGet("populacao/{local}", EndpointConsultaPopulacao.Endpoint);
+                endpoint.MapGet("populacao/{local}", EndpointConsultaPopulacao.Endpoint).WithMetadata(new RouteNameMetadata("consultapop"));
                 endpoint.MapGet("cep/{cep}", EndpointConsultaCep.Endpoint);
             });
 
